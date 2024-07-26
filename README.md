@@ -39,3 +39,19 @@ The Lab Forum Project is a web application designed to facilitate the management
 - **Date:** TEXT (ISO 8601 Date Format)
 - **ClaimedByUserID:** INTEGER (Foreign Key for the claimer, nullable)
 - **ChemicalID:** INTEGER (Foreign Key for the chemical)
+
+
+## Tech Stack
+### Frontend
+HTML/CSS/JS (vanilla probably?)
+
+### Backend
+PHP might be easy to integrate with any sql database we decide to use 
+
+I don't think we need to use python for anything it should be pretty basic backend stuff
+
+actually I think python is equally as easy nvm let's just do that
+
+### Database
+I've used mysql but sqllite is apparently popular for small projects so I'm down for whatever
+
