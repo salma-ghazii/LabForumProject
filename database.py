@@ -39,3 +39,29 @@ def get_labs():
     rows = cursor.fetchall()
     conn.close()
     return rows
+
+
+def insert_post(labid, userid, postContent):
+    """Insert a new post into the database."""
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO posts (LabID, UserID, PostContent) VALUES (?, ?, ?)', (labid, userid, postContent,))
+    conn.commit()
+    conn.close()
+
+
+def get_posts():
+    """Retrieve all labs from the database."""
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM posts')
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+def delete_table(table):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(f'DROP TABLE IF EXISTS {table};')
+    conn.commit()
+    conn.close()

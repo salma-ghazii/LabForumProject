@@ -19,15 +19,22 @@ CREATE TABLE IF NOT EXISTS chemicals (
 );
 
 -- Create Posts Table
+-- CREATE TABLE IF NOT EXISTS posts (
+--     PostID INTEGER PRIMARY KEY AUTOINCREMENT,
+--     LabID INTEGER,
+--     UserID INTEGER, -- Poster
+--     Date TEXT, -- ISO 8601 Date Format
+--     ClaimedByUserID INTEGER, -- Nullable
+--     PostContent TEXT, 
+--     FOREIGN KEY (LabID) REFERENCES labs(LabID),
+--     FOREIGN KEY (UserID) REFERENCES users(UserID),
+--     FOREIGN KEY (ClaimedByUserID) REFERENCES users(UserID),
+--     FOREIGN KEY (ChemicalID) REFERENCES chemicals(ChemicalID)
+-- );
+
 CREATE TABLE IF NOT EXISTS posts (
     PostID INTEGER PRIMARY KEY AUTOINCREMENT,
     LabID INTEGER,
     UserID INTEGER, -- Poster
-    Date TEXT, -- ISO 8601 Date Format
-    ClaimedByUserID INTEGER, -- Nullable
-    ChemicalID INTEGER,
-    FOREIGN KEY (LabID) REFERENCES labs(LabID),
-    FOREIGN KEY (UserID) REFERENCES users(UserID),
-    FOREIGN KEY (ClaimedByUserID) REFERENCES users(UserID),
-    FOREIGN KEY (ChemicalID) REFERENCES chemicals(ChemicalID)
+    PostContent TEXT
 );
