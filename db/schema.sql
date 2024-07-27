@@ -36,5 +36,9 @@ CREATE TABLE IF NOT EXISTS posts (
     PostID INTEGER PRIMARY KEY AUTOINCREMENT,
     LabID INTEGER,
     UserID INTEGER, -- Poster
-    PostContent TEXT
+    PostContent TEXT, 
+    FOREIGN KEY (LabID) REFERENCES labs(LabID),
+    FOREIGN KEY (UserID) REFERENCES users(UserID),
+    FOREIGN KEY (ClaimedByUserID) REFERENCES users(UserID),
+    FOREIGN KEY (ChemicalID) REFERENCES chemicals(ChemicalID)
 );

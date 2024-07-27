@@ -56,6 +56,17 @@ def delete_lab(labid):
     conn.close()
     return jsonify({'status': 'Lab deleted'})
 
+
+@app.route('/posts/<int:postid>', methods=['DELETE'])
+def delete_post(postid):
+    """Delete a lab."""
+    conn = database.connect_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM posts WHERE PostID = ?', (postid,))
+    conn.commit()
+    conn.close()
+    return jsonify({'status': 'Post deleted'})
+
 @app.route('/posts', methods=['GET', 'POST'])
 def manage_posts():
     """Retrieve all posts or add a new post."""

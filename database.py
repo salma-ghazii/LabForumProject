@@ -1,5 +1,9 @@
 import sqlite3
 
+"""
+Defines Database Methods for insertion/deletion and creation of schema
+"""
+
 def connect_db():
     """Connect to the SQLite database."""
     conn = sqlite3.connect('lab_forum.db')
@@ -9,7 +13,7 @@ def create_tables():
     """Create tables in the database."""
     conn = connect_db()
     cursor = conn.cursor()
-    with open('LabForumProjecr\\db\\schema.sql', 'r') as f:
+    with open('LabForumProject\\db\\schema.sql', 'r') as f:
         schema = f.read()
     cursor.executescript(schema)
     conn.commit()
@@ -24,7 +28,7 @@ def insert_lab(location):
     conn.close()
 
 def delete_lab(labid):
-    """Insert a new lab into the database."""
+    """Delete a lab into the database."""
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute('DELETE FROM labs WHERE LabID == ?', (labid,))
@@ -58,6 +62,15 @@ def get_posts():
     rows = cursor.fetchall()
     conn.close()
     return rows
+
+def delete_post(postid):
+    """Retrieve a post from the database."""
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM posts WHERE PostID == ?', (postid,))
+    conn.commit()
+    conn.close()
+
 
 def delete_table(table):
     conn = connect_db()
