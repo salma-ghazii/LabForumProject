@@ -1,14 +1,14 @@
--- Create Labs Table
+-- Labs table
 CREATE TABLE IF NOT EXISTS labs (
     LabID INTEGER PRIMARY KEY AUTOINCREMENT,
-    Location TEXT
+    Location TEXT NOT NULL
 );
 
--- Create Users Table
-CREATE TABLE IF NOT EXISTS users (
+-- Users table
+CREATE TABLE  IF NOT EXISTS users (
     UserID INTEGER PRIMARY KEY AUTOINCREMENT,
-    Name TEXT,
-    ContactInfo TEXT
+    Username TEXT UNIQUE NOT NULL,
+    Password TEXT NOT NULL
 );
 
 -- Create Chemicals Table (Optional)
@@ -32,13 +32,12 @@ CREATE TABLE IF NOT EXISTS chemicals (
 --     FOREIGN KEY (ChemicalID) REFERENCES chemicals(ChemicalID)
 -- );
 
+-- Posts table (updated to include UserID)
 CREATE TABLE IF NOT EXISTS posts (
     PostID INTEGER PRIMARY KEY AUTOINCREMENT,
     LabID INTEGER,
-    UserID INTEGER, -- Poster
-    PostContent TEXT, 
-    FOREIGN KEY (LabID) REFERENCES labs(LabID),
-    FOREIGN KEY (UserID) REFERENCES users(UserID),
-    FOREIGN KEY (ClaimedByUserID) REFERENCES users(UserID),
-    FOREIGN KEY (ChemicalID) REFERENCES chemicals(ChemicalID)
+    UserID INTEGER,
+    PostContent TEXT NOT NULL,
+    FOREIGN KEY (LabID) REFERENCES labs (LabID),
+    FOREIGN KEY (UserID) REFERENCES users (UserID)
 );

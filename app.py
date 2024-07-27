@@ -1,93 +1,87 @@
-# import database
-
-# # Just messing around to make sure the database works
-# database.connect_db()
-# # # database.insert_lab("Newark, NJ")
-# # print(database.get_labs())
-# # database.delete_lab(1)
-# # print(database.get_labs())
-# # database.delete_table("posts")
-# # database.create_tables()
-# # database.insert_post(1, 2, "testing")
-# # print(database.get_posts())
-
-
-from flask import Flask, request, jsonify, render_template
-import sqlite3
-import database
+from flask import Flask, render_template, request, jsonify, session
+from database import connect_db, create_tables, insert_lab, delete_lab, get_labs, insert_post, get_posts, delete_post, insert_user, authenticate_user, get_user_id, delete_table
 
 app = Flask(__name__)
-
+app.secret_key = 'your_secret_key'  # Change this to a random secret key for session management
 
 @app.route('/')
 def index():
-    """Render the main page."""
+    delete_table("users")
+    delete_table("posts")
+    delete_table("labs")
+    create_tables()
     return render_template('index.html')
 
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    if not username or not password:
+        return 'Username and password are required', 400
+    insert_user(username, password)
+    return '', 204
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    if authenticate_user(username, password):
+        session['username'] = username
+        return '', 204
+    return 'Invalid credentials', 401
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('username', None)
+    return '', 204
+
 @app.route('/labs', methods=['GET', 'POST'])
-def manage_labs():
-    """Retrieve all labs or add a new lab."""
+def labs():
     if request.method == 'POST':
-        location = request.json.get('location')
-        conn = database.connect_db()
-        database.create_tables()
-        print("Tables Created")
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO labs (Location) VALUES (?)', (location,))
-        conn.commit()
-        conn.close()
-        return jsonify({'status': 'Lab added'}), 201
+        if 'username' not in session:
+            print("test")
+            return 'Unauthorized', 401
+        data = request.get_json()
+        location = data.get('location')
+        insert_lab(location)
+        return '', 204
+    else:
+        labs = get_labs()
+        # print("labs" + str(labs))
+        return jsonify([{'LabID': row[0], 'Location': row[1]} for row in labs])
 
-    elif request.method == 'GET':
-        conn = database.connect_db()
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM labs')
-        rows = cursor.fetchall()
-        conn.close()
-        return jsonify(rows)
-
-@app.route('/labs/<int:labid>', methods=['DELETE'])
-def delete_lab(labid):
-    """Delete a lab."""
-    conn = database.connect_db()
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM labs WHERE LabID = ?', (labid,))
-    conn.commit()
-    conn.close()
-    return jsonify({'status': 'Lab deleted'})
-
-
-@app.route('/posts/<int:postid>', methods=['DELETE'])
-def delete_post(postid):
-    """Delete a lab."""
-    conn = database.connect_db()
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM posts WHERE PostID = ?', (postid,))
-    conn.commit()
-    conn.close()
-    return jsonify({'status': 'Post deleted'})
+@app.route('/labs/<int:id>', methods=['DELETE'])
+def delete_lab_route(id):
+    if 'username' not in session:
+        return 'Unauthorized', 401
+    delete_lab(id)
+    return '', 204
 
 @app.route('/posts', methods=['GET', 'POST'])
-def manage_posts():
-    """Retrieve all posts or add a new post."""
+def posts():
     if request.method == 'POST':
-        labid = request.json.get('labid')
-        userid = request.json.get('userid')
-        postContent = request.json.get('postContent')
-        conn = database.connect_db()
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO posts (LabID, UserID, PostContent) VALUES (?, ?, ?)', (labid, userid, postContent))
-        conn.commit()
-        conn.close()
-        return jsonify({'status': 'Post added'}), 201
+        if 'username' not in session:
+            return 'Unauthorized', 401
+        data = request.get_json()
+        lab_id = data.get('labid')
+        user_id = get_user_id(session['username'])
+        post_content = data.get('postContent')
+        insert_post(lab_id, user_id, post_content)
+        return '', 204
+    else:
+        posts = get_posts()
+        print("posts" + str(posts))
+        return jsonify([{'PostID': row[0], 'LabID': row[1], 'UserID': row[2], 'PostContent': row[3]} for row in posts])
 
-    elif request.method == 'GET':
-        conn = database.connect_db()
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM posts')
-        rows = cursor.fetchall()
-        conn.close()
-        return jsonify(rows)
+@app.route('/posts/<int:id>', methods=['DELETE'])
+def delete_post_route(id):
+    if 'username' not in session:
+        return 'Unauthorized', 401
+    delete_post(id)
+    return '', 204
 
 if __name__ == '__main__':
+    create_tables()
     app.run(debug=True)
