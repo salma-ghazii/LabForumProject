@@ -8,13 +8,24 @@
     <script src="/static/scripts.js" defer></script>
 </head>
 <body>
-    <div class="navbar">
-        <a href="/">Home</a>
-        <a href="/labs_page">Labs</a>
-        <a href="/posts_page">Posts</a>
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-    </div>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/labs_page">Labs</a></li>
+                <li><a href="/posts_page">Posts</a></li>
+            </ul>
+            <ul class="right-menu">
+                {% if 'username' in session %}
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                    <li>Welcome, {{ session['username'] }}</li>
+                {% else %}
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
 
     <div class="container">
         <h1>Labs</h1>

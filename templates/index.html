@@ -3,22 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab Forum</title>
+    <title>Your Page Title</title>
     <link rel="stylesheet" href="/static/styles.css">
-    <script src="/static/scripts.js" defer></script>
 </head>
 <body>
-    <div class="navbar">
-        <a href="/">Home</a>
-        <a href="/labs_page">Labs</a>
-        <a href="/posts_page">Posts</a>
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-    </div>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/labs_page">Labs</a></li>
+                <li><a href="/posts_page">Posts</a></li>
+            </ul>
+            <ul class="right-menu">
+                {% if 'username' in session %}
+                    <li><a href="#" onclick="logout()">Logout</a></li>
+                    <li>Welcome, {{ session['username'] }}</li>
+                {% else %}
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
 
-    <div class="container">
-        <h1>Welcome to Lab Forum</h1>
-        <p><a href="/login">Login</a> or <a href="/register">Register</a> to get started.</p>
+        <main>
+            <h1>Welcome to the Lab Forum</h1>
+            <p>Please log in or register to access more features.</p>
+        </main>
     </div>
+    <script src="/static/scripts.js" defer></script>
+
 </body>
 </html>

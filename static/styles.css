@@ -15,40 +15,59 @@ body {
 
 h1, h2 {
     color: #333;
-}
-
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
+    margin: 20px 0; /* Add spacing around headings */
 }
 
 /* Navigation Bar */
 .navbar {
     background: #333;
     color: #fff;
-    padding: 10px 0;
+    padding: 15px 0;  /* Increase padding for a larger navbar */
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* Space between left and right items */
+    align-items: center;  /* Center items vertically */
     position: sticky;
     top: 0;
     width: 100%;
     z-index: 1000;
 }
 
+.navbar ul {
+    list-style: none;   /* Remove bullets */
+    margin: 0;
+    padding: 0;
+    display: flex;      /* Align items horizontally */
+}
+
+.navbar li {
+    margin: 0 15px;     /* Space between items */
+}
+
 .navbar a {
     color: #fff;
-    padding: 10px 15px;
+    padding: 10px 20px; /* Increase padding for larger clickable area */
     text-align: center;
     text-decoration: none;
     display: block;
+    font-size: 16px;    /* Increase font size */
 }
 
 .navbar a:hover {
     background: #575757;
+}
+
+/* Aligning items to the right */
+.navbar .right-menu {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .right-menu a {
+    margin-left: 15px;
+}
+
+.navbar .right-menu li {
+    margin: 0;
 }
 
 /* Forms */
@@ -70,6 +89,7 @@ button {
     border-radius: 5px;
     width: 100%;
     box-sizing: border-box;
+    font-size: 16px;    /* Increase font size */
 }
 
 button {

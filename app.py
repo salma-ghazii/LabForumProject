@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
-from database import (connect_db, create_tables, insert_lab, insert_post, get_labs, 
-                      get_posts, delete_lab, delete_post, get_user_id, insert_user, authenticate_user)
+from database import connect_db, create_tables, insert_lab, insert_post, get_labs, get_posts, delete_lab, delete_post, get_user_id, insert_user, authenticate_user
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Set a secret key for session management
@@ -8,66 +7,24 @@ app.secret_key = 'your_secret_key'  # Set a secret key for session management
 @app.route('/')
 def index():
     """Render the home page."""
-    return render_template('index.html')
+    username = session.get('username')
+    return render_template('index.html', username=username)
 
-@app.route('/labs', methods=['GET', 'POST'])
-def labs():
-    """Handle lab-related operations."""
-    if request.method == 'POST':
-        if 'username' not in session:
-            return jsonify({'error': 'Unauthorized'}), 401
-        
-        data = request.get_json()
-        location = data.get('location')
-        if not location:
-            return jsonify({'error': 'Location required'}), 400
-        
-        insert_lab(location)
-        return '', 204
-
-    else:
-        labs = get_labs()
-        return jsonify([{'LabID': row[0], 'Location': row[1]} for row in labs])
-
-@app.route('/posts', methods=['GET', 'POST'])
-def posts():
-    """Handle post-related operations."""
-    if request.method == 'POST':
-        if 'username' not in session:
-            return jsonify({'error': 'Unauthorized'}), 401
-        
-        data = request.get_json()
-        lab_id = data.get('labid')
-        post_content = data.get('postContent')
-        
-        if not lab_id or not post_content:
-            return jsonify({'error': 'LabID and PostContent required'}), 400
-        
-        user_id = get_user_id(session['username'])
-        insert_post(lab_id, user_id, post_content)
-        return '', 204
-
-    else:
-        posts = get_posts()
-        return jsonify([{'PostID': row[0], 'LabID': row[1], 'UserID': row[2], 'PostContent': row[3]} for row in posts])
-
-@app.route('/labs/<int:id>', methods=['DELETE'])
-def delete_lab_route(id):
-    """Delete a lab by ID."""
+@app.route('/labs_page')
+def add_lab_page():
+    """Render the page to add labs."""
     if 'username' not in session:
-        return jsonify({'error': 'Unauthorized'}), 401
-    
-    delete_lab(id)
-    return '', 204
+        return redirect(url_for('login'))
+    username = session.get('username')
+    return render_template('labs.html', username=username)
 
-@app.route('/posts/<int:id>', methods=['DELETE'])
-def delete_post_route(id):
-    """Delete a post by ID."""
+@app.route('/posts_page')
+def add_post_page():
+    """Render the page to add posts."""
     if 'username' not in session:
-        return jsonify({'error': 'Unauthorized'}), 401
-    
-    delete_post(id)
-    return '', 204
+        return redirect(url_for('login'))
+    username = session.get('username')
+    return render_template('posts.html', username=username)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -83,7 +40,8 @@ def login():
         else:
             return jsonify({'error': 'Invalid credentials'}), 401
     
-    return render_template('login.html')
+    username = session.get('username')
+    return render_template('login.html', username=username)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -99,7 +57,8 @@ def register():
         insert_user(username, password)
         return '', 204
     
-    return render_template('register.html')
+    username = session.get('username')
+    return render_template('register.html', username=username)
 
 @app.route('/logout', methods=['POST'])
 def logout():
@@ -107,19 +66,47 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
-@app.route('/labs_page')
-def add_lab_page():
-    """Render the page to add labs."""
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    return render_template('labs.html')
+@app.route('/labs', methods=['GET', 'POST'])
+def labs():
+    """Handle requests related to labs."""
+    if request.method == 'POST':
+        if 'username' not in session:
+            return 'Unauthorized', 401
+        data = request.get_json()
+        location = data.get('location')
+        insert_lab(location)
+        return '', 204
+    else:
+        labs = get_labs()
+        return jsonify([{'LabID': row[0], 'Location': row[1]} for row in labs])
 
-@app.route('/posts_page')
-def add_post_page():
-    """Render the page to add posts."""
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    return render_template('posts.html')
+@app.route('/posts', methods=['GET', 'POST'])
+def posts():
+    """Handle requests related to posts."""
+    if request.method == 'POST':
+        if 'username' not in session:
+            return 'Unauthorized', 401
+        data = request.get_json()
+        lab_id = data.get('labid')
+        user_id = get_user_id(session['username'])
+        post_content = data.get('postContent')
+        insert_post(lab_id, user_id, post_content)
+        return '', 204
+    else:
+        posts = get_posts()
+        return jsonify([{'PostID': row[0], 'LabID': row[1], 'UserID': row[2], 'PostContent': row[3]} for row in posts])
+
+@app.route('/labs/<int:id>', methods=['DELETE'])
+def delete_lab_route(id):
+    """Handle deletion of a lab."""
+    delete_lab(id)
+    return '', 204
+
+@app.route('/posts/<int:id>', methods=['DELETE'])
+def delete_post_route(id):
+    """Handle deletion of a post."""
+    delete_post(id)
+    return '', 204
 
 if __name__ == '__main__':
     create_tables()
