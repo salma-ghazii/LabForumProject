@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab Forum</title>
+    <title>Login - Lab Forum</title>
     <link rel="stylesheet" href="/static/styles.css">
     <script src="/static/scripts.js" defer></script>
 </head>
@@ -17,8 +17,13 @@
     </div>
 
     <div class="container">
-        <h1>Welcome to Lab Forum</h1>
-        <p><a href="/login">Login</a> or <a href="/register">Register</a> to get started.</p>
+        <h1>Login</h1>
+        <div class="form-group">
+            <input type="text" id="loginUsername" placeholder="Username">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <button onclick="login()">Login</button>
+        </div>
+        <p>Don't have an account? <a href="/register">Register here</a>.</p>
     </div>
 </body>
 </html>

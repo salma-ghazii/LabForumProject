@@ -1,36 +1,139 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
+    line-height: 1.6;
     margin: 0;
     padding: 0;
+    background-color: #f4f4f4;
 }
+
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
 }
-.form-group {
-    margin-bottom: 15px;
+
+h1, h2 {
+    color: #333;
 }
-input, button {
-    padding: 10px;
-    margin-top: 5px;
-    display: block;
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Navigation Bar */
+.navbar {
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 0;
     width: 100%;
+    z-index: 1000;
 }
-#labs, #posts {
-    margin-top: 20px;
+
+.navbar a {
+    color: #fff;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
 }
-.lab, .post {
-    border: 1px solid #ddd;
+
+.navbar a:hover {
+    background: #575757;
+}
+
+/* Forms */
+.form-group {
+    margin: 20px 0;
+}
+
+.input-group {
+    margin: 10px 0;
+}
+
+input[type="text"], 
+input[type="password"], 
+input[type="number"], 
+input[type="submit"], 
+button {
     padding: 10px;
-    margin-bottom: 10px;
-    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
 }
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Labs and Posts */
+.lab, 
+.post {
+    background: #fff;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.lab {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+}
+
 .delete-btn {
     position: absolute;
-    top: 10px;
     right: 10px;
+    top: 10px;
+    background: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
     cursor: pointer;
-    color: red;
-    font-weight: bold;
+}
+
+.delete-btn:hover {
+    background: #cc0000;
+}
+
+/* Page Specific Styles */
+header {
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
+}
+
+header h1 {
+    text-align: center;
+    margin: 0;
+}
+
+section {
+    margin: 20px 0;
 }

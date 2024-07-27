@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab Forum</title>
+    <title>Posts - Lab Forum</title>
     <link rel="stylesheet" href="/static/styles.css">
     <script src="/static/scripts.js" defer></script>
 </head>
@@ -17,8 +17,17 @@
     </div>
 
     <div class="container">
-        <h1>Welcome to Lab Forum</h1>
-        <p><a href="/login">Login</a> or <a href="/register">Register</a> to get started.</p>
+        <h1>Posts</h1>
+
+        <h2>Add Post</h2>
+        <div class="form-group">
+            <input type="number" id="postLabID" placeholder="Lab ID">
+            <input type="text" id="postContent" placeholder="Post Content">
+            <button onclick="addPost()">Add Post</button>
+        </div>
+
+        <h2>Posts List</h2>
+        <div id="posts"></div>
     </div>
 </body>
 </html>
