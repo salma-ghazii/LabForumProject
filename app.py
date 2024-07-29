@@ -110,4 +110,4 @@ def delete_post_route(id):
 
 if __name__ == '__main__':
     create_tables()
-    app.run(debug=True)
+    
