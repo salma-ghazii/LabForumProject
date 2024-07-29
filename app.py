@@ -7,6 +7,7 @@ app.secret_key = 'your_secret_key'  # Set a secret key for session management
 @app.route('/')
 def index():
     """Render the home page."""
+    create_tables()
     username = session.get('username')
     return render_template('index.html', username=username)
 
