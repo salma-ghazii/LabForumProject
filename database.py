@@ -12,7 +12,7 @@ def create_tables():
     """Create tables in the database."""
     conn = connect_db()
     cursor = conn.cursor()
-    with open('db\\schema.sql', 'r') as f:
+    with open('db//schema.sql', 'r') as f:
         schema = f.read()
     cursor.executescript(schema)
     conn.commit()
