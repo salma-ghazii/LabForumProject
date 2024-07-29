@@ -13,7 +13,7 @@ def create_tables():
     conn = connect_db()
     cursor = conn.cursor()
     # needed to add full path to work on pythonanywhere but might need to change to work locally 
-    with open('home//sghazi//LabForumProject//db//schema.sql', 'r') as f:
+    with open('home/sghazi/LabForumProject/db/schema.sql', 'r') as f:
         schema = f.read()
     cursor.executescript(schema)
     conn.commit()
