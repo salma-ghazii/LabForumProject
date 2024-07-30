@@ -36,7 +36,7 @@ def login():
         
         if authenticate_user(username, password):
             session['username'] = username
-            return '', 204
+            return 'Logged In Successfully', 204
         else:
             return jsonify({'error': 'Invalid credentials'}), 401
     
@@ -55,7 +55,7 @@ def register():
             return jsonify({'error': 'Username and password required'}), 400
         
         insert_user(username, password)
-        return '', 204
+        return 'Registered Successfully', 204
     
     username = session.get('username')
     return render_template('register.html', username=username)
@@ -75,7 +75,7 @@ def labs():
         data = request.get_json()
         location = data.get('location')
         insert_lab(location)
-        return '', 204
+        return 'Lab Added Successfully', 204
     else:
         labs = get_labs()
         return jsonify([{'LabID': row[0], 'Location': row[1]} for row in labs])
@@ -91,7 +91,7 @@ def posts():
         user_id = get_user_id(session['username'])
         post_content = data.get('postContent')
         insert_post(lab_id, user_id, post_content)
-        return '', 204
+        return 'Added Post Successfully', 204
     else:
         posts = get_posts()
         return jsonify([{'PostID': row[0], 'LabID': row[1], 'UserID': row[2], 'PostContent': row[3]} for row in posts])

@@ -55,3 +55,6 @@ actually I think python is equally as easy nvm let's just do that
 ### Database
 I've used mysql but sqllite is apparently popular for small projects so I'm down for whatever
 
+### Things to add
+Comments to Post
+Make delete only admin privellege

@@ -153,3 +153,31 @@ function logout() {
 }
 
 // Existing functions (fetchLabs, fetchPosts, addLab, addPost, deleteLab, deletePost) remain the same
+
+
+// Function to add a comment
+function addComment() {
+    const postID = document.getElementById('commentPostID').value;
+    const commentContent = document.getElementById('commentContent').value;
+    
+    if (!postID || !commentContent) {
+        alert('Please provide both Post ID and Comment Content.');
+        return;
+    }
+    
+    const commentList = document.getElementById('comments-list');
+    
+    const commentDiv = document.createElement('div');
+    commentDiv.classList.add('comment');
+    
+    const contentP = document.createElement('p');
+    contentP.classList.add('comment-content');
+    contentP.textContent = `Post ID: ${postID} - ${commentContent}`;
+    
+    commentDiv.appendChild(contentP);
+    commentList.appendChild(commentDiv);
+    
+    // Optionally, clear the input fields
+    document.getElementById('commentPostID').value = '';
+    document.getElementById('commentContent').value = '';
+}
